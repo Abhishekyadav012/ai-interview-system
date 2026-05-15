@@ -1,0 +1,26 @@
+# dependencies
+node_modules/
+
+# environment variables
+.env
+
+# logs
+*.log
+
+# frontend build
+Frontend/dist/
+
+# backend build
+Backend/build/
+
+# system files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+
+# deployment
+.vercel/
+.render/
