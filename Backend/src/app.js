@@ -4,29 +4,37 @@ const cors = require("cors");
 
 const app = express();
 
+// Middleware
 app.use(express.json());
 app.use(cookieParser());
 
+// Allowed origins (local + production)
 const allowedOrigins = [
     "http://localhost:5173",
     "https://ai-interview-system-frontend.onrender.com",
 ];
 
+// CORS configuration
 app.use(
     cors({
         origin: function (origin, callback) {
-            if (!origin || allowedOrigins.includes(origin)) {
-                callback(null, true);
+            // allow server-to-server or postman requests
+            if (!origin) return callback(null, true);
+
+            if (allowedOrigins.includes(origin)) {
+                return callback(null, true);
             } else {
-                callback(new Error("Not allowed by CORS"));
+                console.log("❌ Blocked by CORS:", origin);
+                return callback(null, false);
             }
         },
         credentials: true,
     })
 );
 
-app.options("*", cors());
+// IMPORTANT: Do NOT use app.options("*") in modern Express (causes crash)
 
+// Routes
 const authRouter = require("./routes/auth.routes");
 const interviewRouter = require("./routes/interview.routes");
 
